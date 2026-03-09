@@ -1,0 +1,11 @@
+{
+  "name": "lighthouse-map",
+  "version": "1.0.0",
+  "description": "Interactive map of every lighthouse in the world with accurate light animations",
+  "scripts": {
+    "dev": "npx serve . -p 8080",
+    "build": "echo 'Static project - no build needed'"
+  },
+  "license": "MIT",
+  "keywords": ["lighthouse", "map", "maritime", "navigation", "visualization"]
+}

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interactive map of every lighthouse in the world with accurate light flash animations">
+  <meta name="theme-color" content="#0a0a0a">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗼</text></svg>">
+  <title>Lighthouse Map - Every Light in the World</title>
+
+  <!-- MapLibre GL JS -->
+  <!-- TODO: Generate SRI hashes with `shasum -b -a 384 maplibre-gl.js | awk '{print $1}' | xxd -r -p | base64`
+       and add integrity="sha384-<hash>" attributes below for full supply-chain protection -->
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" crossorigin="anonymous">
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js" crossorigin="anonymous"></script>
+
+  <!-- Application styles -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Loading overlay -->
+  <div id="loading-overlay">
+    <div class="spinner"></div>
+    <p class="loading-text">Charting the world's lighthouses...</p>
+  </div>
+
+  <!-- Map container -->
+  <div id="map"></div>
+
+  <!-- Canvas overlay for light beam rendering -->
+  <canvas id="light-canvas"></canvas>
+
+  <!-- Tooltip for lighthouse info on hover -->
+  <div id="tooltip" class="tooltip hidden"></div>
+
+  <!-- Info panel -->
+  <div id="info-panel">
+    <div class="info-title">Lighthouse Map</div>
+    <div class="info-row">
+      <span class="info-label">Lights loaded:</span>
+      <span id="light-count" class="info-value">--</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Visible:</span>
+      <span id="visible-count" class="info-value">--</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">Zoom:</span>
+      <span id="zoom-level" class="info-value">3.0</span>
+    </div>
+  </div>
+
+  <!-- Attribution -->
+  <div id="attribution">
+    Data: <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>
+    &middot; Tiles: <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>
+    &middot; Map of India as per Survey of India guidelines
+  </div>
+
+  <!-- Application scripts (module order matters) -->
+  <script src="js/lightPatterns.js"></script>
+  <script src="js/lightRenderer.js"></script>
+  <script src="js/tooltip.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
