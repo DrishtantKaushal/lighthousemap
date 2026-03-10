@@ -210,6 +210,51 @@ html, body {
   color: rgba(255, 255, 220, 0.8);
 }
 
+/* ---- View controls (globe toggle, day/night toggle) ---- */
+#view-controls {
+  position: fixed;
+  bottom: 120px;
+  right: 10px;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#view-controls button {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 220, 0.08);
+  border-radius: 8px;
+  background: rgba(15, 15, 20, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+  color: #e0e0e0;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+  padding: 0;
+  line-height: 1;
+}
+
+#view-controls button:hover {
+  border-color: rgba(255, 255, 220, 0.25);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.5),
+    0 0 12px rgba(255, 255, 220, 0.1);
+}
+
+#view-controls button.active {
+  border-color: rgba(255, 255, 220, 0.35);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.5),
+    0 0 16px rgba(255, 255, 220, 0.15);
+}
+
 /* ---- Hide default MapLibre attribution (we provide our own) ---- */
 .maplibregl-ctrl-attrib {
   display: none !important;
@@ -236,4 +281,367 @@ html, body {
 
 .maplibregl-ctrl-group button .maplibregl-ctrl-icon {
   filter: invert(1) brightness(0.7);
+}
+
+/* ---- Search and filter panel ---- */
+#search-panel {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 290px;
+}
+
+.search-container {
+  position: relative;
+}
+
+#search-input {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(15, 15, 20, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 220, 0.08);
+  border-radius: 10px;
+  color: #e0e0e0;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#search-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+#search-input:focus {
+  border-color: rgba(255, 255, 220, 0.25);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.5),
+    0 0 12px rgba(255, 255, 220, 0.08);
+}
+
+.search-results {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: rgba(15, 15, 20, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 220, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  max-height: 360px;
+  overflow-y: auto;
+  box-shadow:
+    0 0 20px rgba(255, 255, 220, 0.03),
+    0 8px 32px rgba(0, 0, 0, 0.6);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.search-results.hidden {
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+}
+
+.search-result-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.search-result-item:hover,
+.search-result-item.active {
+  background: rgba(255, 255, 220, 0.06);
+}
+
+.search-result-item + .search-result-item {
+  border-top: 1px solid rgba(255, 255, 220, 0.04);
+}
+
+.search-result-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.search-result-text {
+  min-width: 0;
+  flex: 1;
+}
+
+.search-result-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #e0e0e0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.search-result-name mark {
+  background: rgba(255, 255, 220, 0.2);
+  color: rgba(255, 255, 220, 0.95);
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+.search-result-char {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.search-no-results {
+  padding: 14px;
+  text-align: center;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* ---- Filter chips ---- */
+#filter-bar {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.filter-chip {
+  padding: 5px 12px;
+  border: 1px solid rgba(255, 255, 220, 0.08);
+  border-radius: 16px;
+  background: rgba(15, 15, 20, 0.7);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: inherit;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.filter-chip:hover {
+  border-color: rgba(255, 255, 220, 0.2);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.filter-chip.active {
+  border-color: rgba(255, 255, 220, 0.3);
+  background: rgba(255, 255, 220, 0.08);
+  color: rgba(255, 255, 220, 0.9);
+  box-shadow: 0 0 8px rgba(255, 255, 220, 0.06);
+}
+
+.filter-chip[data-filter="W"].active {
+  border-color: rgba(255, 255, 220, 0.35);
+  color: #fffcdc;
+}
+
+.filter-chip[data-filter="R"].active {
+  border-color: rgba(255, 60, 60, 0.4);
+  color: #ff3c3c;
+  background: rgba(255, 60, 60, 0.08);
+  box-shadow: 0 0 8px rgba(255, 60, 60, 0.1);
+}
+
+.filter-chip[data-filter="G"].active {
+  border-color: rgba(60, 255, 60, 0.4);
+  color: #3cff3c;
+  background: rgba(60, 255, 60, 0.08);
+  box-shadow: 0 0 8px rgba(60, 255, 60, 0.1);
+}
+
+.filter-chip[data-filter="Y"].active {
+  border-color: rgba(255, 255, 60, 0.4);
+  color: #ffff3c;
+  background: rgba(255, 255, 60, 0.08);
+  box-shadow: 0 0 8px rgba(255, 255, 60, 0.1);
+}
+
+/* ---- Filter section labels ---- */
+.filter-section-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 220, 0.35);
+  margin-top: 4px;
+}
+
+/* ---- Pattern filter chips ---- */
+#pattern-bar {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.pattern-chip {
+  padding: 4px 10px;
+  border: 1px solid rgba(255, 255, 220, 0.08);
+  border-radius: 14px;
+  background: rgba(15, 15, 20, 0.7);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 10px;
+  font-weight: 600;
+  font-family: inherit;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pattern-chip:hover {
+  border-color: rgba(255, 255, 220, 0.2);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.pattern-chip.active {
+  border-color: rgba(255, 255, 220, 0.3);
+  background: rgba(255, 255, 220, 0.08);
+  color: rgba(255, 255, 220, 0.9);
+  box-shadow: 0 0 8px rgba(255, 255, 220, 0.06);
+}
+
+/* Pattern icons */
+.pattern-icon {
+  display: inline-block;
+  width: 14px;
+  height: 10px;
+  border-radius: 2px;
+  vertical-align: middle;
+}
+
+.pattern-fixed {
+  background: rgba(255, 255, 220, 0.5);
+}
+
+.pattern-flashing {
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 220, 0.6) 0px,
+    rgba(255, 255, 220, 0.6) 3px,
+    transparent 3px,
+    transparent 5px
+  );
+}
+
+.pattern-quick {
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 220, 0.6) 0px,
+    rgba(255, 255, 220, 0.6) 1.5px,
+    transparent 1.5px,
+    transparent 3px
+  );
+}
+
+.pattern-occulting {
+  background: rgba(255, 255, 220, 0.5);
+  position: relative;
+}
+
+.pattern-occulting::after {
+  content: '';
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  width: 4px;
+  height: 6px;
+  background: rgba(15, 15, 20, 0.9);
+  border-radius: 1px;
+}
+
+/* ---- Overlay toggles ---- */
+#overlay-toggles {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.overlay-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s ease;
+}
+
+.overlay-toggle:hover {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.overlay-toggle input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border: 1px solid rgba(255, 255, 220, 0.2);
+  border-radius: 3px;
+  background: rgba(15, 15, 20, 0.6);
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.overlay-toggle input[type="checkbox"]:checked {
+  background: rgba(255, 255, 220, 0.15);
+  border-color: rgba(255, 255, 220, 0.4);
+}
+
+.overlay-toggle input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 1px;
+  width: 5px;
+  height: 8px;
+  border: solid rgba(255, 255, 220, 0.9);
+  border-width: 0 1.5px 1.5px 0;
+  transform: rotate(45deg);
+}
+
+/* ---- Scrollbar styling for search results ---- */
+.search-results::-webkit-scrollbar {
+  width: 4px;
+}
+
+.search-results::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.search-results::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 220, 0.12);
+  border-radius: 2px;
+}
+
+.search-results::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 220, 0.2);
 }

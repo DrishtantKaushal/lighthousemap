@@ -126,10 +126,65 @@ const LightRenderer = (() => {
     drawLighthouseGlow(ctx, x, y, color, intensity, 5);
   }
 
+  /**
+   * Draw colored sector wedges around a lighthouse showing its light coverage.
+   * Each sector has a start/end bearing, color, and range.
+   * Only drawn at zoom >= 8.
+   *
+   * @param {CanvasRenderingContext2D} ctx
+   * @param {number} x - Canvas X of the lighthouse
+   * @param {number} y - Canvas Y of the lighthouse
+   * @param {Array} sectors - Array of sector objects with start, end, color, range
+   * @param {number} zoom - Current map zoom level
+   * @param {object} map - MapLibre map instance (unused but available)
+   * @param {object} lh - The lighthouse data object (for fallback range)
+   */
+  function drawLighthouseSectors(ctx, x, y, sectors, zoom, map, lh) {
+    if (!sectors || sectors.length === 0) return;
+
+    sectors.forEach(sector => {
+      if (sector.start === null || sector.end === null) return;
+
+      const color = sector.color || 'white';
+      const colorLetter = color === 'white' ? 'W'
+        : color === 'red' ? 'R'
+        : color === 'green' ? 'G'
+        : color === 'yellow' ? 'Y'
+        : 'W';
+      const rgb = colorRGB(colorLetter);
+      const range = sector.range || lh.range || 10;
+
+      // Convert nautical mile range to pixels, capped for performance
+      const rangePixels = Math.min(range * 10 * Math.pow(2, zoom - 10), 500);
+
+      // Convert nautical bearings (clockwise from north) to canvas angles
+      const startAngle = (sector.start - 90) * Math.PI / 180;
+      const endAngle = (sector.end - 90) * Math.PI / 180;
+
+      ctx.save();
+
+      // Soft ambient sector glow — no hard boundary lines
+      const gradient = ctx.createRadialGradient(x, y, 0, x, y, rangePixels);
+      gradient.addColorStop(0, `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0.08)`);
+      gradient.addColorStop(0.5, `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0.04)`);
+      gradient.addColorStop(1, `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0)`);
+
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.arc(x, y, rangePixels, startAngle, endAngle);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.restore();
+    });
+  }
+
   // Public API
   return {
     drawLighthouseGlow,
     drawLighthouseBeam,
+    drawLighthouseSectors,
     colorRGBA,
     colorRGB,
     COLOR_MAP,

@@ -8,11 +8,8 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗼</text></svg>">
   <title>Lighthouse Map - Every Light in the World</title>
 
-  <!-- MapLibre GL JS -->
-  <!-- TODO: Generate SRI hashes with `shasum -b -a 384 maplibre-gl.js | awk '{print $1}' | xxd -r -p | base64`
-       and add integrity="sha384-<hash>" attributes below for full supply-chain protection -->
-  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" crossorigin="anonymous">
-  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.1.0/dist/maplibre-gl.css" crossorigin="anonymous">
+  <script src="https://unpkg.com/maplibre-gl@5.1.0/dist/maplibre-gl.js" crossorigin="anonymous"></script>
 
   <!-- Application styles -->
   <link rel="stylesheet" href="css/style.css">
@@ -50,6 +47,41 @@
     </div>
   </div>
 
+  <!-- Search and filter panel -->
+  <div id="search-panel">
+    <div class="search-container">
+      <input id="search-input" type="text" placeholder="Search lighthouses..." autocomplete="off">
+      <div id="search-results" class="search-results hidden"></div>
+    </div>
+    <div id="filter-bar">
+      <button class="filter-chip active" data-filter="all">All</button>
+      <button class="filter-chip" data-filter="W">White</button>
+      <button class="filter-chip" data-filter="R">Red</button>
+      <button class="filter-chip" data-filter="G">Green</button>
+      <button class="filter-chip" data-filter="Y">Yellow</button>
+    </div>
+    <div class="filter-section-label">Flash Pattern</div>
+    <div id="pattern-bar">
+      <button class="pattern-chip active" data-pattern="all">All</button>
+      <button class="pattern-chip" data-pattern="fixed"><span class="pattern-icon pattern-fixed"></span>Fixed</button>
+      <button class="pattern-chip" data-pattern="flashing"><span class="pattern-icon pattern-flashing"></span>Flashing</button>
+      <button class="pattern-chip" data-pattern="quick"><span class="pattern-icon pattern-quick"></span>Quick</button>
+      <button class="pattern-chip" data-pattern="occulting"><span class="pattern-icon pattern-occulting"></span>Occulting</button>
+    </div>
+    <div class="filter-section-label">Overlays</div>
+    <div id="overlay-toggles">
+      <label class="overlay-toggle"><input type="checkbox" id="major-toggle"><span>Major lights only</span></label>
+      <label class="overlay-toggle"><input type="checkbox" id="range-toggle"><span>Show visibility range</span></label>
+      <label class="overlay-toggle"><input type="checkbox" id="cinema-toggle"><span>Cinema mode</span></label>
+    </div>
+  </div>
+
+  <!-- View controls (globe toggle, day/night toggle) -->
+  <div id="view-controls">
+    <button id="globe-toggle" title="Toggle 3D Globe">🌍</button>
+    <button id="terminator-toggle" title="Toggle day/night overlay">🌙</button>
+  </div>
+
   <!-- Attribution -->
   <div id="attribution">
     Data: <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>
@@ -60,7 +92,9 @@
   <!-- Application scripts (module order matters) -->
   <script src="js/lightPatterns.js"></script>
   <script src="js/lightRenderer.js"></script>
+  <script src="js/terminator.js"></script>
   <script src="js/tooltip.js"></script>
+  <script src="js/search.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
