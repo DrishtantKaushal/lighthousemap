@@ -1,0 +1,9 @@
+screenshots/
+scripts/
+video/
+docs/
+data/raw-geodienst*.json
+data/*.backup.json
+*.log
+.DS_Store
+node_modules/
