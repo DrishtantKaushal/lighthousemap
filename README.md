@@ -4,11 +4,11 @@
 
 Live demo: [thelighthousemap.netlify.app](https://tinyurl.com/thelighthousemap)
 
-![World view — 30,198 lighthouses with real flash patterns on a dark basemap](screenshots/initial-load.png)
+![World view — 30,191 lighthouses with real flash patterns on a dark basemap](screenshots/initial-load.png)
 
 ## What It Does
 
-An interactive map of 30,198 lighthouses drawn from OpenStreetMap seamark data, each rendered with its actual IALA light characteristic. If a lighthouse near Brest flashes red twice every 10 seconds in real life, it does that on the map. Zoom out and coastlines draw themselves — not by borders, but by light. Toggle to a 3D globe and watch them light up like nervous systems. Zero API keys, zero backend, zero build step.
+An interactive map of 30,191 lighthouses drawn from OpenStreetMap seamark data, each rendered with its actual IALA light characteristic. If a lighthouse near Brest flashes red twice every 10 seconds in real life, it does that on the map. Zoom out and coastlines draw themselves — not by borders, but by light. Toggle to a 3D globe and watch them light up like nervous systems. Zero API keys, zero backend, zero build step.
 
 ## Built in One Claude Code Session
 
@@ -16,7 +16,7 @@ The entire project — data fetching, processing, map rendering, flash pattern e
 
 ## Features
 
-- 30,198 lighthouses with real IALA light characteristics (color, period, range, sector bearings)
+- 30,191 lighthouses with real IALA light characteristics (color, period, range, sector bearings)
 - 10 flash pattern types faithfully reproduced: Fixed, Flashing, Long Flashing, Quick, Very Quick, Isophase, Occulting, Morse, Alternating, and Group patterns
 - Three-tier level-of-detail rendering: glow dots at world zoom, animated flashes at mid zoom, full rotating beam cones up close
 - Canvas 2D additive blending for realistic light accumulation where beams overlap
@@ -46,7 +46,7 @@ Six vanilla JavaScript modules, no bundler:
 
 - **Primary:** [Geodienst](https://geodienst.xyz/) seamark export from OpenStreetMap (26,000+ lights with full IALA characteristics)
 - **Supplementary:** Overpass API queries for India, Middle East, and other regions with sparse seamark coverage
-- **Result:** 30,198 lighthouses with valid characteristics across 10 pattern types, stored as a single flat JSON file (`data/lighthouses-full.json`)
+- **Result:** 30,191 lighthouses with valid characteristics across 10 pattern types, stored as a single flat JSON file (`data/lighthouses-full.json`)
 
 ## Quick Start
 
